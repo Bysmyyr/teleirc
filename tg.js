@@ -208,8 +208,12 @@ module.exports = function(config, sendTo) {
             sendTo.irc(channel.ircChan, getName(msg.left_chat_participant, config) +
                 ' was removed by: ' + getName(msg.from, config));
         } else {
-            text = msg.text.replace(/\n/g , '\n<' + getName(msg.from, config) + '>: ');
-            sendTo.irc(channel.ircChan, '<' + getName(msg.from, config) + '>: ' + text);
+            var name = getName(msg.from, config);
+            if (name == "Katja" ){
+                name = "vonKatja"
+            }
+            text = msg.text.replace(/\n/g , '\n<' + name + '>: ');
+            sendTo.irc(channel.ircChan, '<' + name + '>: ' + msg.text);
         }
     });
 
