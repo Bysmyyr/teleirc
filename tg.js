@@ -87,16 +87,20 @@ function randomValueBase64(len) {
 
 var serveFile = function(fileId, config, tg, callback) {
     var randomString = randomValueBase64(config.mediaRandomLenght);
-    mkdirp(process.env.HOME + '/.teleirc/files/' + randomString);
-    tg.downloadFile(fileId, process.env.HOME + '/.teleirc/files/' +
-                                   randomString).then(function(filePath) {
+    var downloadPath = process.env.HOME + '/.teleirc/files/';
+    if (config.useExternalHttpServer) {
+        downloadPath = config.externalHttpPath;
+    }
+
+    mkdirp(downloadPath + randomString);
+    tg.downloadFile(fileId, downloadPath + randomString).then(function(filePath) {
         callback(config.httpLocation + '/' + randomString + '/' + path.basename(filePath));
     });
 };
 
 module.exports = function(config, sendTo) {
     // start HTTP server for media files if configured to do so
-    if (config.showMedia) {
+    if (config.showMedia && !config.useExternalHttpServer) {
         var fileServer = new nodeStatic.Server(process.env.HOME + '/.teleirc/files');
         mkdirp(process.env.HOME + '/.teleirc/files');
 

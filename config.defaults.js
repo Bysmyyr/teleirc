@@ -26,6 +26,12 @@ config.maxMsgAge = 60;
 // HTTP server port
 config.httpPort = 9090;
 
+// You can use external HttpServer(Apache, lighthttpd, etc)
+config.useExternalHttpServer = false;
+
+// Configure filepath for external HttpServer
+config.externalHttpPath = '/home/some/dir/';
+
 // HTTP server location, URLs are generated from this
 config.httpLocation = 'http://mydomain.com' + ':' + config.httpPort;
 
