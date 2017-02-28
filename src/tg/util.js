@@ -126,8 +126,11 @@ exports.initHttpServer = function() {
     mkdirp(filesPath);
 
     var fileServer = new nodeStatic.Server(filesPath);
+var privateKey  = fs.readFileSync('/home/bysmyyr/teleirc/server.key', 'utf8');
+var certificate = fs.readFileSync('/home/bysmyyr/teleirc/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
-    require('http').createServer(function(req, res) {
+    require('https').createServer(credentials, function(req, res) {
         req.addListener('end', function() {
             fileServer.serve(req, res);
         }).resume();
